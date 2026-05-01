@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Complete Picture — NTU SCTP Data Science &amp; AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ntu-navy: #1b2a4a;
+  --ntu-dark: #1e3054;
+  --ntu-blue: #2c5697;
+  --ntu-blue-light: #3d6db5;
+  --ntu-crimson: #c8102e;
+  --ntu-crimson-dark: #a50d26;
+
+  --bg: #ffffff;
+  --bg-off: #f4f5f7;
+  --border: #dde1e6;
+  --border-light: #e8eaed;
+
+  --text: #1b2a4a;
+  --text-body: #333d4d;
+  --text-dim: #5f6b7a;
+  --text-light: #8c95a1;
+
+  --c-data: #2c5697;
+  --c-unsup: #6b4c9a;
+  --c-nlp: #0e7490;
+  --c-nn: #b45309;
+  --c-vec: #1a7a5c;
+  --c-knn: #be123c;
+  --c-sup: #c2410c;
+  --c-llm: #c8102e;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-body);
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ═══════ HERO ═══════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2.5rem;
+  position: relative;
+  background: var(--bg);
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 6px;
+  background: var(--ntu-crimson);
+}
+
+.hero-programme {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ntu-blue);
+  margin-bottom: 1.2rem;
+  opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 300;
+  line-height: 1.25;
+  max-width: 720px;
+  color: var(--ntu-navy);
+  opacity: 0; animation: fadeUp 0.7s 0.5s forwards;
+}
+.hero h1 strong { font-weight: 700; color: var(--ntu-crimson); }
+
+.hero-sub {
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--text-dim);
+  max-width: 540px;
+  margin-top: 1rem;
+  opacity: 0; animation: fadeUp 0.7s 0.8s forwards;
+}
+
+.hero-scroll {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-top: 3.5rem;
+  opacity: 0; animation: fadeUp 0.7s 1.2s forwards;
+}
+.hero-scroll span { display: block; margin-top: 0.5rem; font-size: 1.2rem; animation: pulse 2s 2s infinite; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+@keyframes pulse { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
+
+/* ═══════ SECTION DIVIDER — navy bar ═══════ */
+.section-divider {
+  width: 100%;
+  padding: 2.5rem 2rem;
+  background: var(--ntu-navy);
+  text-align: center;
+  position: relative;
+}
+.section-divider::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--ntu-crimson);
+}
+.section-divider h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 300;
+  color: #fff;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.35;
+}
+.section-divider h2 strong { font-weight: 700; }
+.section-divider p {
+  color: rgba(255,255,255,0.6);
+  font-size: 0.92rem;
+  margin-top: 0.5rem;
+  max-width: 520px;
+  margin-left: auto; margin-right: auto;
+}
+
+/* ═══════ CONTENT SECTION ═══════ */
+.section {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 3rem;
+}
+
+.heading-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 3px solid var(--ntu-crimson);
+}
+.heading-bar h2 {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--ntu-navy);
+}
+.heading-bar h2 strong { font-weight: 700; }
+
+.heading-sub {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  margin-bottom: 2rem;
+}
+
+/* ═══════ CONSTELLATION ═══════ */
+.constellation-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  aspect-ratio: 1;
+  margin: 0 auto 1.5rem;
+  opacity: 0; transform: scale(0.96);
+  transition: opacity 0.7s, transform 0.7s;
+}
+.constellation-wrapper.visible { opacity: 1; transform: scale(1); }
+
+.constellation-svg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+.constellation-svg line {
+  stroke: var(--border); stroke-width: 1.5;
+  opacity: 0; transition: opacity 0.4s, stroke 0.3s;
+}
+.constellation-svg line.active { opacity: 1; stroke-width: 2.5; }
+.constellation-svg line.dim { opacity: 0.08; }
+.constellation-svg line.visible { opacity: 0.25; }
+
+.node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 2; cursor: pointer;
+  text-align: center;
+  transition: transform 0.3s;
+}
+.node:hover { transform: translate(-50%, -50%) scale(1.05); }
+
+.node-dot {
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  margin: 0 auto 0.35rem;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; font-weight: 700; color: white;
+  letter-spacing: 0.04em;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  position: relative;
+}
+.node:hover .node-dot { transform: scale(1.12); }
+.node.active .node-dot { transform: scale(1.2); box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+
+.node-ring {
+  position: absolute; inset: -5px;
+  border-radius: 50%; border: 2.5px solid;
+  opacity: 0; transition: opacity 0.3s;
+}
+.node.active .node-ring { opacity: 0.4; }
+
+.node-label {
+  font-size: 0.72rem; font-weight: 600;
+  color: var(--text); max-width: 94px;
+  line-height: 1.25; transition: opacity 0.3s;
+}
+.node.dimmed .node-label { opacity: 0.25; }
+.node.dimmed .node-dot { opacity: 0.2; transform: scale(0.85); }
+
+/* ═══════ DETAIL PANEL ═══════ */
+.detail-panel {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--border);
+  border-radius: 4px;
+  padding: 1.6rem 1.8rem;
+  max-width: 620px;
+  margin: 0 auto;
+  min-height: 170px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+  transition: border-color 0.3s;
+}
+
+.detail-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+.detail-empty .icon { display: block; font-size: 1.6rem; margin-bottom: 0.5rem; opacity: 0.3; }
+
+.detail-header {
+  display: flex; align-items: center; gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+.detail-badge {
+  width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.5rem; font-weight: 700; color: white;
+}
+.detail-title-group h3 {
+  font-size: 1.2rem; font-weight: 700;
+  color: var(--ntu-navy); line-height: 1.2;
+}
+.detail-title-group .detail-sub {
+  font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-top: 0.1rem;
+}
+
+.detail-body .recall {
+  font-size: 0.88rem; color: var(--text-body); line-height: 1.75;
+}
+
+.role-callout {
+  margin: 1rem 0;
+  padding: 0.9rem 1.1rem;
+  border-left: 4px solid;
+  background: var(--bg-off);
+  border-radius: 0 4px 4px 0;
+  font-size: 0.85rem; line-height: 1.7;
+  color: var(--text-body);
+}
+.role-callout .role-label {
+  display: block;
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.conn-heading {
+  font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 0.4rem; margin-top: 0.8rem;
+}
+
+.conn-chip {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 3px; border: 1px solid var(--border);
+  font-size: 0.7rem; font-weight: 600;
+  margin: 0.15rem 0.15rem;
+  cursor: pointer; transition: all 0.2s;
+  background: var(--bg);
+}
+.conn-chip:hover { border-color: currentColor; background: var(--bg-off); }
+.conn-chip .chip-dot {
+  width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+}
+
+.mod-row { display: flex; flex-wrap: wrap; gap: 0.25rem; margin-top: 0.5rem; }
+.mod-tag {
+  font-size: 0.58rem; font-weight: 600;
+  padding: 0.2rem 0.45rem; border-radius: 3px;
+}
+
+/* ═══════ PROMPT TRACE ═══════ */
+.prompt-trace { position: relative; padding-left: 2.8rem; }
+.prompt-trace::before {
+  content: '';
+  position: absolute; left: 15px; top: 0; bottom: 0;
+  width: 3px; border-radius: 2px;
+  background: linear-gradient(to bottom,
+    var(--c-data), var(--c-nlp), var(--c-vec), var(--c-nn),
+    var(--c-knn), var(--c-unsup), var(--c-sup), var(--c-llm)
+  );
+}
+
+.trace-step {
+  position: relative;
+  padding: 0.7rem 0 1.3rem;
+  opacity: 0; transform: translateX(-8px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.trace-step.visible { opacity: 1; transform: translateX(0); }
+
+.trace-dot {
+  position: absolute; left: -2.8rem; top: 0.9rem;
+  width: 12px; height: 12px; border-radius: 50%;
+  transform: translateX(10px);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+}
+
+.trace-label {
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 0.1rem;
+}
+
+.trace-text {
+  font-size: 0.88rem; color: var(--text-dim); line-height: 1.7;
+}
+.trace-text strong { color: var(--text); font-weight: 600; }
+
+/* ═══════ CLOSING ═══════ */
+.closing-slide {
+  min-height: 55vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--ntu-navy);
+  position: relative;
+  opacity: 0; transition: opacity 0.6s;
+}
+.closing-slide.visible { opacity: 1; }
+.closing-slide::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 6px; background: var(--ntu-crimson);
+}
+.closing-slide blockquote {
+  font-size: clamp(1.05rem, 2.5vw, 1.45rem);
+  font-weight: 300; font-style: italic;
+  color: #fff; max-width: 600px; line-height: 1.65;
+}
+.closing-slide .attr {
+  font-size: 0.6rem; font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4); margin-top: 1.5rem;
+}
+
+/* ═══════ RESPONSIVE ═══════ */
+@media (max-width: 640px) {
+  .constellation-wrapper { aspect-ratio: auto; height: 370px; }
+  .node-dot { width: 40px; height: 40px; font-size: 0.5rem; }
+  .node-label { font-size: 0.58rem; max-width: 70px; }
+  .detail-panel { padding: 1.2rem; }
+  .section { padding: 2rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-programme">(SCTP) Advanced Professional Certificate · Data Science and AI</div>
+  <h1>You didn't learn eight subjects.<br>You learned <strong>one system.</strong></h1>
+  <p class="hero-sub">Every module you completed is a piece of the same machine. This is the moment it all connects.</p>
+  <p class="hero-scroll">Scroll to explore <span>↓</span></p>
+</section>
+
+<!-- ═══════ DIVIDER ═══════ -->
+<div class="section-divider">
+  <h2>The <strong>Constellation</strong></h2>
+  <p>Tap any node to see its role in the complete system.</p>
+</div>
+
+<!-- ═══════ CONSTELLATION ═══════ -->
+<section class="section">
+  <div class="constellation-wrapper" id="constellationWrapper">
+    <svg class="constellation-svg" id="connSvg"></svg>
+  </div>
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-empty">
+      <span class="icon">◉</span>
+      Select a node above to explore how each module contributed to the complete picture.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ DIVIDER ═══════ -->
+<div class="section-divider">
+  <h2>Trace a <strong>Single Prompt</strong></h2>
+  <p>Every module activates when someone types:<br><em>"Explain quantum computing simply."</em></p>
+</div>
+
+<!-- ═══════ PROMPT TRACE ═══════ -->
+<section class="section">
+  <div class="heading-bar">
+    <h2>What <strong>actually happens</strong></h2>
+  </div>
+  <p class="heading-sub">Follow the prompt through the system — your knowledge lights up at every step.</p>
+
+  <div class="prompt-trace">
+    <div class="trace-step">
+      <div class="trace-dot" style="background:var(--c-data)"></div>
+      <div class="trace-label" style="color:var(--c-data)">Big Data Engineering</div>
+      <div class="trace-text">The prompt hits a <strong>load-balanced API cluster</strong>. The model's 100GB+ weights are served from <strong>distributed GPU memory</strong> — the same infrastructure patterns you studied.</div>
+    </div>
+    <div class="trace-step">
+      <div class="trace-dot" style="background:var(--c-nlp)"></div>
+      <div class="trace-label" style="color:var(--c-nlp)">Natural Language Processing</div>
+      <div class="trace-text">The sentence is <strong>tokenised</strong> — broken into subword units. "Quantum" and "computing" become tokens, each mapped to a position. The <strong>preprocessing pipeline</strong> you built in your NLP module runs here.</div>
+    </div>
+    <div class="trace-step">
+      <div class="trace-dot" style="background:var(--c-vec)"></div>
+      <div class="trace-label" style="color:var(--c-vec)">Vector Space &amp; Embeddings</div>
+      <div class="trace-text">Each token is converted into a <strong>high-dimensional vector</strong> — a coordinate in meaning space. "Quantum" lands near "physics" and "superposition", far from "recipes". The <strong>embedding layer</strong> you studied is doing this.</div>
+    </div>
+    <div class="trace-step">
+      <div class="trace-dot" style="background:var(--c-nn)"></div>
+      <div class="trace-label" style="color:var(--c-nn)">Neural Networks</div>
+      <div class="trace-text">The vectors pass through <strong>dozens of transformer layers</strong> — attention heads, feed-forward networks, residual connections. Every concept you covered in the neural networks module is firing simultaneously.</div>
+    </div>
+    <div class="trace-step">
+      <div class="trace-dot" style="background:var(--c-knn)"></div>
+      <div class="trace-label" style="color:var(--c-knn)">KNN &amp; Similarity</div>
+      <div class="trace-text">The model identifies the <strong>nearest contextual neighbours</strong> for "explain" + "simply" — navigating toward accessible language rather than academic jargon. <strong>Proximity in vector space guides every word choice.</strong></div>
+    </div>
+    <div class="trace-step">
+      <div class="trace-dot" style="background:var(--c-unsup)"></div>
+      <div class="trace-label" style="color:var(--c-unsup)">Unsupervised Learning</div>
+      <div class="trace-text">All of this structure — the clusters, the semantic neighbourhoods, the model's knowledge — <strong>emerged without human labels</strong>. Billions of self-supervised predictions on raw text created the map.</div>
+    </div>
+    <div class="trace-step">
+      <div class="trace-dot" style="background:var(--c-sup)"></div>
+      <div class="trace-label" style="color:var(--c-sup)">Supervised Learning &amp; RLHF</div>
+      <div class="trace-text">The word "simply" triggers <strong>alignment training</strong>. The model has learned, through labelled fine-tuning and human feedback rankings, that this prompt expects a clear, accessible response — not a research paper.</div>
+    </div>
+    <div class="trace-step">
+      <div class="trace-dot" style="background:var(--c-llm)"></div>
+      <div class="trace-label" style="color:var(--c-llm)">LLM — The Convergence</div>
+      <div class="trace-text">Token by token, the response appears. <strong>Every word is a prediction</strong> — informed by data pipelines, shaped by neural architecture, located in vector space, navigated by similarity, refined by alignment. <strong>One prompt. All eight modules. Simultaneously.</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CLOSING ═══════ -->
+<div class="closing-slide">
+  <blockquote>"You haven't been learning disconnected topics. You've been building the vocabulary to understand one of the most significant technologies humans have ever built. Now you can see the whole."</blockquote>
+  <div class="attr">NTU SCTP · Data Science and AI · Course Conclusion</div>
+</div>
+
+<script>
+const NODES = [
+  { id:'data', label:'Big Data\nEngineering', short:'BDE', hex:'#2c5697',
+    angle:-90, radius:0.38, subtitle:'Foundation',
+    recall:'You learned to build the pipelines, data lakes, and distributed systems that collect, clean, and serve petabytes of data. Without this infrastructure, there is no training data — and no model.',
+    role:'Supplies the fuel. Every byte the LLM was trained on flowed through data engineering pipelines — ETL, storage, streaming, quality filtering. At inference time, your skills power the serving infrastructure.',
+    modules:['ETL Pipelines','Data Lakes','Distributed Systems','Batch vs Stream','Data Quality'],
+    connects:['unsup','nlp','llm']
+  },
+  { id:'unsup', label:'Unsupervised\nLearning', short:'UL', hex:'#6b4c9a',
+    angle:-38, radius:0.38, subtitle:'Discovery',
+    recall:'You learned how structure emerges from unlabelled data — clustering, dimensionality reduction, self-organising patterns. The LLM\'s entire knowledge base was built this way.',
+    role:'The training signal. Nobody labelled billions of sentences. The model\'s understanding of language self-organised from raw co-occurrence patterns — pure unsupervised learning at unprecedented scale.',
+    modules:['Clustering','Dimensionality Reduction','Self-Supervised Learning','PCA','Autoencoders'],
+    connects:['data','vec','nn','sup']
+  },
+  { id:'nlp', label:'Natural Language\nProcessing', short:'NLP', hex:'#0e7490',
+    angle:14, radius:0.38, subtitle:'Language',
+    recall:'You learned that meaning can be represented mathematically — tokenisation, embeddings, the distributional hypothesis. This is the field that asked: can language be the data?',
+    role:'Defines the domain. NLP contributed the foundational insight that words appearing in similar contexts have similar meaning — the philosophical foundation of every embedding and every LLM.',
+    modules:['Tokenisation','Word2Vec','Sentiment Analysis','Text Preprocessing','Language Models'],
+    connects:['vec','data','nn']
+  },
+  { id:'nn', label:'Neural\nNetworks', short:'NN', hex:'#b45309',
+    angle:66, radius:0.38, subtitle:'Mechanism',
+    recall:'You learned the guess-check-adjust loop — forward pass, loss, backpropagation. The neural network is the engine that runs trillions of training iterations to build the vector space.',
+    role:'The cartographer. The neural network builds the meaning map through repeated training cycles. Its learned weights ARE the vector positions. Training the network IS building the map.',
+    modules:['Backpropagation','Activation Functions','Transformers','Attention','Loss Functions'],
+    connects:['vec','unsup','sup','nlp']
+  },
+  { id:'vec', label:'Vector Space\n& Embeddings', short:'VEC', hex:'#1a7a5c',
+    angle:130, radius:0.36, subtitle:'Structure',
+    recall:'You learned that meaning is encoded as location — words as coordinates, similarity as proximity, and arithmetic on concepts. This is the representation layer that makes everything navigable.',
+    role:'The map itself. After training, every word and concept has a position in high-dimensional space. This is the structure that all other components either build, navigate, or refine.',
+    modules:['Word Embeddings','Cosine Similarity','Dimensionality','Vector Databases','Semantic Search'],
+    connects:['nn','knn','nlp','unsup','llm']
+  },
+  { id:'knn', label:'K-Nearest\nNeighbours', short:'KNN', hex:'#be123c',
+    angle:182, radius:0.38, subtitle:'Navigation',
+    recall:'You learned that proximity defines similarity — finding the K nearest points, classification by neighbourhood. In LLMs, this is exactly how the vector space is navigated at inference time.',
+    role:'The compass. When the model asks "what word fits best here?", it\'s finding the nearest neighbours in vector space. KNN logic is embedded in every attention calculation and token prediction.',
+    modules:['Distance Metrics','Classification','Retrieval (RAG)','Recommendation Systems','Similarity Search'],
+    connects:['vec','llm','sup']
+  },
+  { id:'sup', label:'Supervised\nLearning & RLHF', short:'SL', hex:'#c2410c',
+    angle:234, radius:0.38, subtitle:'Refinement',
+    recall:'You learned supervised classification, regression, and labelled training. In the LLM pipeline, this is how raw capability becomes useful behaviour — fine-tuning and human feedback alignment.',
+    role:'The mentor. Unsupervised learning built the knowledge; supervised fine-tuning and RLHF shaped the behaviour. This is why the model follows instructions, sounds helpful, and avoids harm.',
+    modules:['Classification','Regression','Labelled Data','Loss Functions','Reinforcement Learning','RLHF'],
+    connects:['nn','unsup','knn','llm']
+  },
+  { id:'llm', label:'Large Language\nModels', short:'LLM', hex:'#c8102e',
+    angle:-90, radius:0, subtitle:'Convergence',
+    recall:'This isn\'t a separate thing you learned. It\'s every other module running simultaneously — data infrastructure, unsupervised pattern discovery, neural network training, vector space navigation, and supervised alignment, unified at scale.',
+    role:'The convergence. When someone types a prompt, all seven other modules activate at once. The LLM is not built on top of your curriculum — it IS your curriculum, running together.',
+    modules:['Prompt Engineering','Fine-Tuning','Tokenisation','Inference','AI Ethics','Responsible AI'],
+    connects:['data','unsup','nlp','nn','vec','knn','sup']
+  },
+];
+
+const wrapper = document.getElementById('constellationWrapper');
+const svg = document.getElementById('connSvg');
+const panel = document.getElementById('detailPanel');
+
+function getPos(n) {
+  return {
+    x: 50 + n.radius * 100 * Math.cos(n.angle * Math.PI/180),
+    y: 50 + n.radius * 100 * Math.sin(n.angle * Math.PI/180)
+  };
+}
+
+const drawn = {};
+NODES.forEach(n => {
+  n.connects.forEach(tid => {
+    const k = [n.id,tid].sort().join('-');
+    if (!drawn[k]) {
+      const t = NODES.find(x=>x.id===tid);
+      const p1=getPos(n), p2=getPos(t);
+      const ln = document.createElementNS('http://www.w3.org/2000/svg','line');
+      ln.setAttribute('x1',p1.x+'%'); ln.setAttribute('y1',p1.y+'%');
+      ln.setAttribute('x2',p2.x+'%'); ln.setAttribute('y2',p2.y+'%');
+      ln.dataset.from=n.id; ln.dataset.to=tid;
+      ln.classList.add('visible');
+      svg.appendChild(ln);
+      drawn[k]=ln;
+    }
+  });
+});
+
+NODES.forEach(n => {
+  const p = getPos(n);
+  const el = document.createElement('div');
+  el.className='node'; el.dataset.id=n.id;
+  el.style.left=p.x+'%'; el.style.top=p.y+'%';
+  el.innerHTML=`
+    <div class="node-dot" style="background:${n.hex}">
+      <div class="node-ring" style="border-color:${n.hex}"></div>${n.short}
+    </div>
+    <div class="node-label">${n.label.replace('\n','<br>')}</div>`;
+  el.addEventListener('click',()=>selectNode(n.id));
+  wrapper.appendChild(el);
+});
+
+function selectNode(id) {
+  const node = NODES.find(n=>n.id===id);
+  if(!node) return;
+
+  document.querySelectorAll('.node').forEach(el => {
+    const nid=el.dataset.id;
+    if(nid===id){el.classList.add('active');el.classList.remove('dimmed');}
+    else if(node.connects.includes(nid)){el.classList.remove('active','dimmed');}
+    else{el.classList.remove('active');el.classList.add('dimmed');}
+  });
+
+  svg.querySelectorAll('line').forEach(ln => {
+    const f=ln.dataset.from, t=ln.dataset.to;
+    if(f===id||t===id){
+      ln.classList.add('active');ln.classList.remove('dim','visible');
+      ln.style.stroke=NODES.find(n=>n.id===(f===id?t:f)).hex;
+    } else {
+      ln.classList.remove('active','visible');ln.classList.add('dim');
+      ln.style.stroke='';
+    }
+  });
+
+  const connHTML = node.connects.map(cid => {
+    const cn=NODES.find(n=>n.id===cid);
+    return `<span class="conn-chip" onclick="selectNode('${cid}')" style="color:${cn.hex}"><span class="chip-dot" style="background:${cn.hex}"></span>${cn.label.replace('\n',' ')}</span>`;
+  }).join('');
+
+  const modHTML = node.modules.map(m =>
+    `<span class="mod-tag" style="background:${node.hex}14;color:${node.hex}">${m}</span>`
+  ).join('');
+
+  panel.style.borderTopColor = node.hex;
+  panel.innerHTML = `
+    <div class="detail-header">
+      <div class="detail-badge" style="background:${node.hex}">${node.short}</div>
+      <div class="detail-title-group">
+        <h3>${node.label.replace('\n',' ')}</h3>
+        <div class="detail-sub" style="color:${node.hex}">${node.subtitle}</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <p class="recall">${node.recall}</p>
+      <div class="role-callout" style="border-color:${node.hex}">
+        <span class="role-label" style="color:${node.hex}">Its role in the LLM</span>
+        ${node.role}
+      </div>
+      <div class="conn-heading" style="color:${node.hex}">Directly connected to</div>
+      ${connHTML}
+      <div class="conn-heading" style="color:${node.hex};margin-top:0.8rem">Your modules that power this</div>
+      <div class="mod-row">${modHTML}</div>
+    </div>`;
+}
+
+// Scroll observers
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.constellation-wrapper,.trace-step,.closing-slide').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
